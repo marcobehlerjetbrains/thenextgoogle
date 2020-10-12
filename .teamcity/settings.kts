@@ -31,7 +31,6 @@ project {
     buildType(Build)
 }
 
-
 object Build : BuildType({
     name = "Build"
 
