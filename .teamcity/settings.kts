@@ -29,11 +29,21 @@ version = "2020.1"
 
 project {
 
-    buildType(Build)
+    buildType(Compile)
+    buildType(FastTest)
+    buildType(SlowTest)
+    buildType(Package)
+
+    sequential {
+        buildType(Compile)
+        buildType(FastTest)
+        buildType(SlowTest)
+        buildType(Package)
+    }
 }
 
-object Build : BuildType({
-    name = "Build"
+object Compile : BuildType({
+    name = "Compile"
 
     vcs {
         root(DslContext.settingsRoot)
@@ -41,7 +51,67 @@ object Build : BuildType({
 
     steps {
 
-        val myGoals = "clean test"
+        val myGoals = "clean compile"
+
+        maven {
+            goals = myGoals
+            runnerArgs = "-Dmaven.test.failure.ignore=true"
+        }
+    }
+
+    features {
+        freeDiskSpace {
+            requiredSpace = "5gb"
+            failBuild = true
+        }
+    }
+})
+
+object FastTest : BuildType({
+    name = "FastTest"
+
+    vcs {
+        root(DslContext.settingsRoot)
+    }
+
+    steps {
+
+        maven {
+            goals = "test"
+            runnerArgs = "-Dmaven.test.failure.ignore=true -Dtest=*.unit.*Test"
+        }
+    }
+
+})
+
+object SlowTest : BuildType({
+    name = "SlowTest"
+
+    vcs {
+        root(DslContext.settingsRoot)
+    }
+
+    steps {
+
+        maven {
+            goals = "test"
+            runnerArgs = "-Dmaven.test.failure.ignore=true -Dtest=*.integration.*Test"
+        }
+    }
+
+})
+
+
+object Package : BuildType({
+    name = "Package"
+
+    vcs {
+        root(DslContext.settingsRoot)
+    }
+
+    steps {
+
+        val myGoals = "package"
 
         maven {
             goals = myGoals
@@ -53,11 +123,5 @@ object Build : BuildType({
         vcs {
         }
     }
-
-    features {
-        freeDiskSpace {
-            requiredSpace = "5gb"
-            failBuild = true
-        }
-    }
 })
+
