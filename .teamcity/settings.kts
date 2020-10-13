@@ -29,100 +29,32 @@ version = "2020.1"
 
 project {
 
-    buildType(Compile)
-    buildType(FastTest)
-    buildType(SlowTest)
-    buildType(Package)
+    var chain = sequential {
 
-    sequential {
-        buildType(Compile)
+        buildType(Maven("Compile", "clean compile"))
+
         parallel {
-            buildType(FastTest)
-            buildType(SlowTest)
+            buildType(Maven("Fast Test", "test", "-Dmaven.test.failure.ignore=true -Dtest=*.unit.*Test"))
+            buildType(Maven("Slow Test", "test", "-Dmaven.test.failure.ignore=true -Dtest=*.integration.*Test"))
         }
-        buildType(Package)
+        buildType(Maven("Package", "package"))
     }
+
+    chain.buildTypes().forEach{ buildType(it)}
 }
 
-object Compile : BuildType({
-    name = "Compile"
+class Maven(name: String, goals: String, runnerArgs: String = "") : BuildType({
+
+    this.name = name
 
     vcs {
         root(DslContext.settingsRoot)
     }
 
     steps {
-
-        val myGoals = "clean compile"
-
         maven {
-            goals = myGoals
-            runnerArgs = "-Dmaven.test.failure.ignore=true"
-        }
-    }
-
-    features {
-        freeDiskSpace {
-            requiredSpace = "5gb"
-            failBuild = true
-        }
-    }
-})
-
-object FastTest : BuildType({
-    name = "FastTest"
-
-    vcs {
-        root(DslContext.settingsRoot)
-    }
-
-    steps {
-
-        maven {
-            goals = "test"
-            runnerArgs = "-Dmaven.test.failure.ignore=true -Dtest=*.unit.*Test"
-        }
-    }
-
-})
-
-object SlowTest : BuildType({
-    name = "SlowTest"
-
-    vcs {
-        root(DslContext.settingsRoot)
-    }
-
-    steps {
-
-        maven {
-            goals = "test"
-            runnerArgs = "-Dmaven.test.failure.ignore=true -Dtest=*.integration.*Test"
-        }
-    }
-
-})
-
-
-object Package : BuildType({
-    name = "Package"
-
-    vcs {
-        root(DslContext.settingsRoot)
-    }
-
-    steps {
-
-        val myGoals = "package"
-
-        maven {
-            goals = myGoals
-            runnerArgs = "-Dmaven.test.failure.ignore=true"
-        }
-    }
-
-    triggers {
-        vcs {
+            this.goals = goals
+            this.runnerArgs = runnerArgs;
         }
     }
 })
