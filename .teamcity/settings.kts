@@ -42,7 +42,7 @@ project {
     }
 
     chain.buildTypes().forEachIndexed { index, bt ->
-        {
+        run {
             buildType(bt)
             if (index == chain.buildTypes().lastIndex) {
                 bt.triggers {
