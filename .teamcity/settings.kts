@@ -1,3 +1,4 @@
+import jetbrains.buildServer.configs.kotlin.v10.toExtId
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.freeDiskSpace
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
@@ -51,7 +52,7 @@ project {
 }
 
 class Maven(name: String, goals: String, runnerArgs: String = "") : BuildType({
-
+    id(("TheNextG_${name}").toExtId())
     this.name = name
 
     vcs {
