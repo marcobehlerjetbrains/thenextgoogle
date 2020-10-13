@@ -38,17 +38,21 @@ project {
             buildType(Maven("Fast Test", "test", "-Dmaven.test.failure.ignore=true -Dtest=*.unit.*Test"))
             buildType(Maven("Slow Test", "test", "-Dmaven.test.failure.ignore=true -Dtest=*.integration.*Test"))
         }
-
-        val `package` = Maven("Package", "package")
-        `package`.triggers {
-            vcs {
-
-            }
-        }
-        buildType(`package`)
+        buildType(Maven("Package", "package"))
     }
 
-    chain.buildTypes().forEach{ buildType(it)}
+    chain.buildTypes().forEachIndexed { index, bt ->
+        {
+            if (index == chain.buildTypes().lastIndex) {
+                bt.triggers {
+                    vcs {
+
+                    }
+                }
+            }
+            buildType(bt)
+        }
+    }
 }
 
 class Maven(name: String, goals: String, runnerArgs: String = "") : BuildType({
