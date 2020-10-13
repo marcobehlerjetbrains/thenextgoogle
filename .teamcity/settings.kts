@@ -27,7 +27,6 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 version = "2020.1"
 
 project {
-
     buildType(Build)
 }
 
@@ -40,7 +39,7 @@ object Build : BuildType({
 
     steps {
         maven {
-            goals = "clean test"
+            goals = "clean package"
             runnerArgs = "-Dmaven.test.failure.ignore=true"
         }
     }
