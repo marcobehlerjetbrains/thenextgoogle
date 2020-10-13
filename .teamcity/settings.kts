@@ -1,4 +1,5 @@
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.freeDiskSpace
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
 
@@ -47,6 +48,12 @@ object Build : BuildType({
 
     triggers {
         vcs {
+        }
+    }
+
+    features {
+        freeDiskSpace {
+            failBuild = false
         }
     }
 })
