@@ -53,7 +53,8 @@ object Build : BuildType({
 
     features {
         freeDiskSpace {
-            failBuild = false
+            requiredSpace = "5gb"
+            failBuild = true
         }
     }
 })
