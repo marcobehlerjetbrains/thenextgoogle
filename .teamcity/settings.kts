@@ -37,7 +37,14 @@ project {
             buildType(Maven("Fast Test", "test", "-Dmaven.test.failure.ignore=true -Dtest=*.unit.*Test"))
             buildType(Maven("Slow Test", "test", "-Dmaven.test.failure.ignore=true -Dtest=*.integration.*Test"))
         }
-        buildType(Maven("Package", "package"))
+
+        val `package` = Maven("Package", "package")
+        `package`.triggers {
+            vcs {
+
+            }
+        }
+        buildType(`package`)
     }
 
     chain.buildTypes().forEach{ buildType(it)}
