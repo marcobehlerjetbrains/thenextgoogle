@@ -43,6 +43,7 @@ project {
 
     chain.buildTypes().forEachIndexed { index, bt ->
         {
+            buildType(bt)
             if (index == chain.buildTypes().lastIndex) {
                 bt.triggers {
                     vcs {
@@ -50,7 +51,6 @@ project {
                     }
                 }
             }
-            buildType(bt)
         }
     }
 }
