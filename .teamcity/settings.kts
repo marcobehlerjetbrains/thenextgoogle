@@ -40,7 +40,7 @@ object Build : BuildType({
     steps {
         maven {
             name = "my custom step name"
-            goals = "clean package e"
+            goals = "clean package"
             runnerArgs = "-Dmaven.test.failure.ignore=true"
         }
     }
