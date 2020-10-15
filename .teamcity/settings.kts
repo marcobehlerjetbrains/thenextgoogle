@@ -37,10 +37,10 @@ project {
         buildType(Maven("Package", "package", "-DskipTests" ))
     }
 
-    chain.buildTypes().forEachIndexed { index, it ->
+    chain.buildTypes().forEach {
         run {
             buildType(it)
-                if (index == chain.buildTypes().size - 1) {
+                if (it == chain.buildTypes().last()) {
                 it.triggers {
                     vcs {
                     }
