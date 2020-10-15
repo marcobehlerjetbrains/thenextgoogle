@@ -40,7 +40,7 @@ project {
     chain.buildTypes().forEachIndexed { index, it ->
         run {
             buildType(it)
-            if (index == chain.buildTypes().size) {
+                if (index == chain.buildTypes().size - 1) {
                 it.triggers {
                     vcs {
                     }
