@@ -103,6 +103,7 @@ object Package : BuildType({
     steps {
         maven {
             goals = "package"
+            runnerArgs = "-DskipTests"
         }
     }
 
