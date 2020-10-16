@@ -31,7 +31,7 @@ project {
     val chain = sequential {
         buildType(Maven("Build", "clean compile" ))
         parallel {
-            buildType(Maven("Fast Test", "test", "-Dtest=*.unit.*Test" ))
+            buildType(Maven("Fast Testii", "test", "-Dtest=*.unit.*Test" ))
             buildType(Maven("Slow Test", "test", "-Dtest=*.integration.*Test" ))
         }
         buildType(Maven("Package", "package", "-DskipTests" ))
@@ -52,7 +52,6 @@ project {
 
 class Maven(name: String, goals: String, runnerArgs: String = ""): BuildType({
     id("TodoList_${name}".toExtId())
-    this.name = name
 
     vcs {
         root(DslContext.settingsRoot)
