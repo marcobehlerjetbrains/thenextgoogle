@@ -15,4 +15,9 @@ public class OneMoreSyntaxCheckerUnitTest {
     public void helloMe2() {
         assertEquals(1,1);
     }
+
+    @Test
+    public void helloMe3() {
+        assertEquals(1,1);
+    }
 }
