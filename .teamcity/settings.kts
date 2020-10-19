@@ -43,7 +43,7 @@ project {
                 if (it == chain.buildTypes().last()) {
                 it.triggers {
                     vcs {
-                        watchChangesInDependencies = true
+
                     }
                 }
             }
